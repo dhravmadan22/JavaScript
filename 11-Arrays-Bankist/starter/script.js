@@ -96,6 +96,20 @@ const calcPrintBalance = function(movements){
 calcPrintBalance(account1.movements)
 
 
+const calcdisplaySummary= function(movements){
+
+  const incomes = movements.filter((mov, i, arr) => mov > 0 ).reduce((acc, cur, i, arr) => acc+cur);
+  labelSumIn.textContent = `${incomes}💶`
+  
+  const  deficit= movements.filter((mov, i, arr) => mov < 0 ).reduce((acc, cur, i, arr) => acc+cur);
+  labelSumOut.textContent = `${Math.abs(deficit)}💶`
+
+  const interest = movements.filter((mov, i, arr) => mov > 0).map((mov,i,arr) => mov*1.2/100).filter((int, i, arr) => int > 1 ).reduce((acc, cur, i, arr) => acc+cur)
+  labelSumInterest.textContent = `${interest}💶`
+
+}
+calcdisplaySummary(account1.movements)
+
 // create username from owner name
 const createUsernames = function(accs){
 
@@ -218,6 +232,36 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 
 
-// Array coding exercise number 2
+// Array coding exercise number 2 and 3
 
-const data = [5,2,4,1,15,8,3]
+// const data = [5,2,4,1,15,8,3];
+// const data1 = [16,6,10,5,6,1,4];
+
+
+// const calcAverageHumanAge = function (ages) {
+//   const humanAges = ages.map(age => (age <= 2 ? 2 * age : 16 + age * 4));
+//   const adults = humanAges.filter(age => age >= 18);
+//   console.log(humanAges);
+//   console.log(adults);
+
+//   const average = adults.reduce(
+//     (acc, age, i, arr) => acc + age / arr.length,
+//     0
+//   );
+
+//   return average;
+// };
+
+// const calcAverageHumanAgeArrow = (ages) => {
+//   const average = ages.map(age => (age <= 2 ? 2 * age : 16 + age * 4)).filter(age => age >= 18).reduce(
+//     (acc, age, i, arr) => acc + age / arr.length,
+//     0
+//   );
+
+//   return average;
+// };
+
+// const avg1 = calcAverageHumanAge(data)
+// const avg2 = calcAverageHumanAgeArrow(data1)
+
+// console.log(avg1, avg2);
