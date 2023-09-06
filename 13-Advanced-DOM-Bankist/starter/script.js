@@ -2,7 +2,8 @@
 
 ///////////////////////////////////////
 // Modal window
-
+const btnSrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
@@ -32,6 +33,63 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+btnSrollTo.addEventListener('click', function (e) {
+  // Old School Way
+  // const s1coords = section1.getBoundingClientRect();
+  // console.log(s1coords);
+
+  // scrolling
+  // window.scrollTo(
+  //   s1coords.left + window.pageXOffset,
+  //   s1coords.top + window.pageYOffset
+  // );
+
+  //smooth scrolling
+  // window.scrollTo({
+  //   left: s1coords.left + window.pageXOffset,
+  //   top: s1coords.top + window.pageYOffset,
+  //   behavior: 'smooth',
+  // });
+
+  // Modern Scrolling
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+/////////////////////////////////////////////////////////////////
+//////////////////////Page Navigation///////////////////////////
+///////////////////////////////////////////////////////////////
+
+// document.querySelectorAll('.nav__link').forEach(function (el, i, arr) {
+//   // console.log(el, i, arr);
+
+//   el.addEventListener('click', function (e) {
+//     // console.log('link');
+//     e.preventDefault();
+//     const id = this.getAttribute('href');
+//     console.log(id);
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   });
+// }); // this can be inefficient as we are attaching an event handler to each link.
+
+// EVENT DELEGATION using event bubbling
+
+// 1. Add event listener to a common parent element
+// 2. Determine element from which the event was originated
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  console.log(e.target);
+  e.preventDefault();
+
+  // Matching stratergy
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 
 // <------------------------------------------------------------->
 // <------------------------------------------------------------->
@@ -126,27 +184,76 @@ document.addEventListener('keydown', function (e) {
 
 // logo.className = 'jonas'; //overwrites all other classes
 
-const btnSrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector('#section--1');
+//  rgb(255,255,255)
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
 
-btnSrollTo.addEventListener('click', function (e) {
-  // Old School Way
-  const s1coords = section1.getBoundingClientRect();
-  console.log(s1coords);
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
 
-  // scrolling
-  // window.scrollTo(
-  //   s1coords.left + window.pageXOffset,
-  //   s1coords.top + window.pageYOffset
-  // );
+console.log(randomColor());
 
-  //smooth scrolling
-  // window.scrollTo({
-  //   left: s1coords.left + window.pageXOffset,
-  //   top: s1coords.top + window.pageYOffset,
-  //   behavior: 'smooth',
-  // });
+// In an event handler the this keyword will point to the element on which the event handler is attached
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('LINK', e.target, e.currentTarget);
 
-  // Modern Scrolling
-  section1.scrollIntoView({ behavior: 'smooth' });
+//   // e.stopPropagation(); // we can stop the default event propogation, NOT A GOOD IDEA!!
+// });
+
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('CONTAINER', e.target, e.currentTarget);
+// });
+
+// document.querySelector('.nav').addEventListener(
+//   'click',
+//   function (e) {
+//     this.style.backgroundColor = randomColor();
+//     console.log('NAV', e.target, e.currentTarget);
+//   }
+//   // true // this will catch capturing events and not bubbling events
+// );
+
+// here above if we click the .nav__link all the three '.nav__link' '.nav__links' and '.nav' elements change their color. This is due to event propogation and bubbling.
+
+// the e.target element is always the same. The event that all handlers receive is the exact same event
+
+// the e.currentTarget is the elements through which the handler is passing or to the element which the handler is attached to. This is the same object to which the this keyword points to
+
+// Output in ONENOTE as well
+
+// EVENT DELEGATION
+//  Added to the application. Basically means that add an event listener to the common parent of all the elements you want to add an event listener to.
+// Also important at the time when we want to add event listners on elements that are going to be created dynamically
+
+// DOM Traversing
+
+const h1 = document.querySelector('h1');
+
+// going downwards: child
+console.log(h1.querySelectorAll('.highlight')); // this can go down as deep
+console.log(h1.childNodes); // gives child nodes of the current element
+console.log(h1.children); // only works for immediate child -> html collection
+console.log((h1.firstElementChild.style.color = 'white'));
+console.log((h1.lastElementChild.style.color = 'orangered'));
+
+// Going upwards: parents
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+h1.closest('.header').style.background = 'var(--gradient-secondary)'; // closest parent which matches the query
+h1.closest('h1').style.background = 'var(--gradient-primary)'; // closest parent which matches the query
+
+// Going Sideways: siblings
+
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+console.log(h1.parentElement.children);
+[...h1.parentElement.children].forEach(function (el) {
+  if (el !== h1) el.style.transform = 'scale(0.5)';
 });
