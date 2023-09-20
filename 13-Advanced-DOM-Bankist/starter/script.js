@@ -509,9 +509,9 @@ window.addEventListener('load', function (e) {
 //   e.returnValue = '';
 // });
 
-
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 
 // Efficient Script loading
 
+// defer and async. In OneNote Notebook
